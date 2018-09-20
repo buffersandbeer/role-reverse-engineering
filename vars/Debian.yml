@@ -1,6 +1,7 @@
 ---
 
 __re_packages:
+    - automake
     - gdb
     - gdb-multiarch
     - qemu-user
@@ -8,3 +9,11 @@ __re_packages:
     - build-essential
     - strace
     - binutils
+    - ltrace
+    - libtool
+    - pkg-config
+    - dissy
+    - hexedit
+
+__re_pip_packages:
+    - capstone

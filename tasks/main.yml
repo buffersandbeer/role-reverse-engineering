@@ -7,5 +7,9 @@
       re_packages: "{{ __re_packages | list }}"
   when: re_packages is not defined
 
+- name: Define pip re packages
+  set_fact:
+      re_pip_packages: "{{ __re_pip_packages | list }}"
+
 - name: Include os-specific setup
   include_tasks: "setup-{{ ansible_os_family }}.yml"

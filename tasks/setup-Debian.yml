@@ -1,11 +1,74 @@
 ---
 - name: Update apt cache
+  become: true
   apt:
       update_cache: yes
       cache_valid_time: 3600
 
 - name: Install RE Packages
+  become: true
   apt:
       name: "{{ item }}"
       state: present
   with_items: "{{ re_packages }}"
+
+- name: Install RE pip packages
+  become: true
+  pip:
+      name: "{{ item }}"
+  with_items: "{{ re_pip_packages }}"
+
+- name: Download AFL
+  git:
+      repo: 'https://github.com/mirrorer/afl'
+      dest: /tmp/afl
+
+- name: Make AFL
+  make:
+      chdir: /tmp/afl
+
+- name: Install AFL
+  become: true
+  make:
+      chdir: /tmp/afl
+      target: install
+
+- name: Download zzuf
+  git:
+      repo: 'https://github.com/samhocevar/zzuf'
+      dest: /tmp/zzuf
+
+- name: Run zzuf bootstrap
+  shell: bash /tmp/zzuf/bootstrap
+  args:
+      chdir: /tmp/zzuf
+
+- name: Configure zzuf install
+  shell: ./configure
+  args:
+      chdir: /tmp/zzuf
+
+- name: Make zzuf
+  make:
+      chdir: /tmp/zzuf
+
+- name: Make install zzuf
+  become: true
+  make:
+      chdir: /tmp/zzuf
+      target: install
+
+- name: Download Wasabi
+  become:
+  git:
+      repo: 'https://github.com/danleh/wasabi'
+      dest: /opt/wasabi
+
+- name: Set permissions on wasabi
+  become: true
+  file:
+      path: /opt/wasabi
+      recurse: yes
+      owner: root
+      group: pentesters
+      mode: 0775
