@@ -1,0 +1,11 @@
+---
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+ 
+- name: Define standard re packages
+  set_fact:
+      re_packages: "{{ __re_packages | list }}"
+  when: re_packages is not defined
+
+- name: Include os-specific setup
+  include_tasks: "setup-{{ ansible_os_family }}.yml"

@@ -1,0 +1,10 @@
+---
+
+__re_packages:
+    - gdb
+    - gdb-multiarch
+    - qemu-user
+    - qemu-user-static
+    - build-essential
+    - strace
+    - binutils
