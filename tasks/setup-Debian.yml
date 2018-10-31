@@ -59,7 +59,6 @@
       target: install
 
 - name: Download Wasabi
-  become:
   git:
       repo: 'https://github.com/danleh/wasabi'
       dest: /opt/wasabi
@@ -72,3 +71,12 @@
       owner: root
       group: pentesters
       mode: 0775
+
+- name: Download Radare2
+  git:
+      repo: 'https://github.com/radare/radare2'
+      dest: /tmp/radare
+
+- name: Install Radare2
+  become: true
+  shell: bash /tmp/radare/sys/install.sh
